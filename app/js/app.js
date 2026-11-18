@@ -89,7 +89,23 @@
     else content=(q.type==='reading'?'<p class="reading-instruction"><strong>Please read the following information carefully and answer the question below:</strong></p><div class="reading-passage">'+esc(q.passage)+'</div>':'')+'<h1>'+esc(q.type==='reading'?'Question: Which one of the following statements is correct?':q.question)+'</h1>'+options(q,ans);
     return shell(a,counter(a)+'<div class="'+(hasFeedback?'question-with-feedback':'')+'"><div class="question-content">'+content+'<div id="question-warning" role="alert"></div></div>'+(hasFeedback?feedback(q,a):'')+'</div>',examBottom(a));
   }
-  function routeExam(a,q){const pts=((a.answers[q.id]||{}).points)||[];return shell(a,'<div class="route-layout"><aside class="route-instructions">'+counter(a)+'<strong>Route planning · '+a.marks[q.id]+' marks</strong><h1>'+esc(q.question)+'</h1><ol><li>Start at the green marker.</li><li>Plot the most direct legal route to the red marker.</li><li>Click at every bend. Hold and drag to move the map; use the wheel to zoom.</li><li>Follow the one-way arrows and restrictions shown.</li></ol>'+(a.settings.drawingMode==='assisted'?'<div class="notice info">Assisted drawing is on. Points snap to junctions and follow legal roads.</div>':'')+(a.mode!=='mock'?button('Check route','check','','primary'):'')+'<div id="question-warning" role="alert"></div></aside><div class="route-workspace"><div class="map-toolbar">'+button('Undo last point','undo-route')+button('Clear route','clear-route')+button('Centre on start','centre-start')+button('Map key','legend')+'<span class="route-status" id="route-point-count">'+pts.length+' points</span></div><div id="route-map" class="route-map" aria-label="Interactive route-planning map"></div><div id="route-feedback"></div></div></div>',examBottom(a),'route-panel');}
+  function routeExam(a,q){
+    const points=a.answers[q.id]?.points||[];
+    const compact=matchMedia('(max-width: 700px), (max-width: 960px) and (max-height: 540px)').matches;
+    const instructions='<details'+(compact?'':' open')+'><summary>Drawing instructions</summary>'+
+      '<ol><li>Start at the green S and finish at the red E.</li><li>Choose the most direct legal route, following one-way arrows and restrictions.</li>'+
+      '<li>Tap or click each bend to add a point. Drag to pan. Pinch, scroll or use + and − to zoom.</li></ol></details>';
+    const question='<aside class="route-instructions">'+counter(a)+'<strong>Route planning · '+a.marks[q.id]+' marks</strong><h1>'+esc(q.question)+'</h1>'+
+      instructions+(a.settings.drawingMode==='assisted'?'<div class="notice info">Assisted drawing is on. Points snap to junctions and follow legal roads.</div>':'')+
+      '<div id="question-warning" role="alert"></div></aside>';
+    const tools='<div class="map-toolbar">'+button('Undo last point','undo-route')+button('Clear route','clear-route')+
+      button('Centre on start','centre-start')+button('Map key','legend')+'</div>';
+    const actions='<div class="route-actions"><span id="route-point-count" role="status">'+points.length+' points</span>'+
+      (a.mode!=='mock'?button('Check route','check','','primary'):'')+'</div>';
+    const workspace='<div class="route-workspace">'+tools+'<div id="route-map" class="route-map" aria-label="Interactive route-planning map"></div>'+
+      actions+'<div id="route-feedback"></div></div>';
+    return shell(a,'<div class="route-layout">'+question+workspace+'</div>',examBottom(a),'route-panel');
+  }
   function review(){const a=P.state.attempt;if(!a){screen='home';return home();}const done=a.ids.filter(id=>P.answered(byId.get(id),a.answers[id])).length;
     return shell(a,'<div class="review-heading"><h1>Review assessment</h1><span class="small-text">'+done+' answered · '+(a.ids.length-done)+' unanswered · '+a.flags.length+' flagged</span></div><div class="review-legend"><span>Choose a question to return to it.</span><span>Green = answered</span><span>Yellow = flagged</span></div><div class="review-grid">'+a.ids.map((id,i)=>{const answered=P.answered(byId.get(id),a.answers[id]),flagged=a.flags.includes(id);return button('<strong>Question '+(i+1)+(flagged?' ⚑':'')+'</strong><span>'+(answered?'Answered':'Unanswered')+(flagged?' · Flagged':'')+'</span>','jump','data-index="'+i+'"','review-question'+(answered?' answered':'')+(flagged?' flagged':''));}).join('')+'</div><div class="review-actions"><p>Your answers are saved. You can return to any question before finishing.</p>'+button('Finish assessment','finish-confirm','','primary')+'</div>','<div class="exam-bottom"><div>'+button('Return to question','back-to-question')+'</div></div>');}
   function canLeave(){const a=P.state.attempt,q=attemptQuestion();if(screen!=='exam'||!q||q.type!=='cloze'||a.settings.blankStyle!=='drag')return true;const ans=a.answers[q.id];if(!ans)return true;const assigned=Object.values(ans.blanks||{}).length+(ans.discarded||[]).length;
@@ -115,7 +131,9 @@
   let feedbackLayers=[];
   function makeMap(container,q){
     const data=window.PHV_MAP, g=R.graph();
-    const map=L.map(container,{zoomControl:true,minZoom:data.minZoom||12,maxZoom:data.maxZoom||17,maxBounds:data.bounds,maxBoundsViscosity:1,preferCanvas:true,attributionControl:true});
+    // A finishing pinch animation can otherwise undo an immediate tap on Centre on start.
+    const animateZoom=!matchMedia('(pointer: coarse)').matches;
+    const map=L.map(container,{zoomControl:true,zoomAnimation:animateZoom,minZoom:data.minZoom||12,maxZoom:data.maxZoom||17,maxBounds:data.bounds,maxBoundsViscosity:1,preferCanvas:true,attributionControl:true});
     map.attributionControl.setPrefix(false);
     L.tileLayer('tiles/{z}/{x}/{y}.webp',{bounds:data.bounds,minZoom:data.minZoom||12,maxNativeZoom:data.maxZoom||17,maxZoom:data.maxZoom||17,noWrap:true,attribution:'© OpenStreetMap contributors · ODbL',errorTileUrl:'tiles/empty.webp',keepBuffer:1}).addTo(map);
     map.fitBounds(q.bounds||data.bounds,{padding:[30,30],maxZoom:16});
@@ -174,7 +192,7 @@
     check(){const q=attemptQuestion();if(P.state.attempt.mode==='mock')return;feedbackId=q.id;if(q.type==='route')showRouteFeedback();else render();},
     'undo-route'(){const a=P.state.attempt,q=attemptQuestion(),ans=a.answers[q.id];if(!ans?.points?.length)return;const previous=ans.undo?.pop();ans.points=ans.points.slice(0,previous===undefined?-1:previous);clearFeedback();P.save();drawRoute();},
     'clear-route'(){const a=P.state.attempt,q=attemptQuestion();a.answers[q.id]={points:[],undo:[]};clearFeedback();P.save();drawRoute();},
-    'centre-start'(){const q=attemptQuestion(),n=R.graph().nodes.get(String(q.start));if(n)currentMap.setView(R.coord(n),Math.max(16,currentMap.getZoom()));},
+    'centre-start'(){const q=attemptQuestion(),n=R.graph().nodes.get(String(q.start));if(n)currentMap.stop().setView(R.coord(n),Math.max(16,currentMap.getZoom()),{animate:false});},
     'show-result-route'(el){resultMap(el.dataset.id);},
     history(el){currentResult=P.state.history.find(a=>a.id===el.dataset.id);screen='results';render();},
     export(){const blob=new Blob([JSON.stringify(P.state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='phv-progress-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);toast('Progress exported. Keep the file as your backup.');},

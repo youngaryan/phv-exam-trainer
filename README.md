@@ -26,6 +26,8 @@ Once extracted, the trainer works offline. You only need a browser to practise. 
 2. For **SERU**, select an answer or drag words into the blanks. In drag mode, put the unused words in **Incorrect words here**. For **Topographical**, click the green start, click at each bend and finish at the red marker. Drag the map to pan, scroll to zoom, and use **Undo last point** to correct a click. Select **Check route** to compare your drawing with the reference route.
 3. Select **Click here to review assessment** to revisit any question. Choose **Finish assessment** and confirm to see your score. Expand a question under **Question review** for the answer and explanation. Use **My mistakes** for another drill on missed questions.
 
+On a phone, tap the green **S**, tap each bend, then tap the red **E**. Drag with one finger to move the map and pinch with two fingers to zoom. The **+** and **−** buttons also zoom. Tap **Check route** below the map for your marks. For SERU word questions, tap a word and then its blank or the red box.
+
 For a timed session, select **Start mock exam** on Overview. The countdown begins when you choose **Begin assessment** after the instructions and continues if you close the window. Answers save automatically. Mock feedback appears after submission.
 
 To keep a backup or move to another computer, select **Settings → Export progress** in the original browser. On the new computer, open the trainer, select **Settings → Import progress** and choose the saved JSON file. Confirming the import replaces that browser's existing progress.

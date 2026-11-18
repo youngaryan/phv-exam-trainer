@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "test": "node tests/state.cjs && node tests/marking.cjs --bank && node tests/e2e.cjs && node tests/route-ui.cjs",
-    "test:unit": "node tests/state.cjs && node tests/marking.cjs --bank"
+    "test:unit": "node tests/state.cjs && node tests/marking.cjs --bank",
+    "test:mobile": "node tests/mobile.cjs"
   },
   "devDependencies": {
     "leaflet": "1.9.4",

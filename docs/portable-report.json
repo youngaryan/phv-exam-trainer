@@ -6,6 +6,6 @@
   "consoleErrors": [],
   "networkRequests": [],
   "ok": true,
-  "path": "C:\\Users\\AryanGolbaghi\\Desktop\\lendable\\starter\\old\\arch\\phv_app\\research\\Fresh machine test & spaces",
+  "path": "research/Fresh machine test & spaces",
   "note": "Large immutable assets use NTFS hardlinks to avoid duplicating bytes on the constrained disk. This is a clean-profile/path test on the current PC, not a second physical machine."
 }

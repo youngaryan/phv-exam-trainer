@@ -50,6 +50,6 @@ Use that copy's `Start PHV Trainer.bat` for the separate offline launcher test. 
 
 ## Execution status
 
-On 18 November 2026, the read-only source audit passed after all 400 static-map questions were rendered: 5,362 distributed files, approximately 209.97 MB; largest file 29.72 MB. All 400 map references, 140 route graphs and 4,733 declared-coverage tiles existed. The current Git metadata was 0.76 MB at that pre-map-commit snapshot, making the combined measurement approximately 210.72 MB. Re-run after the final Git commit and screenshot changes to obtain the final inventory; these are recorded observations, not a permanent size guarantee.
+On 18 November 2026, the source audit passed after the final browser run: 5,370 distributed files, approximately 211.67 MB; largest file 29.72 MB. All 400 map references, 140 route graphs and 4,733 declared-coverage tiles existed. After the map release commit and removal of an incomplete automatic-repack temporary file, source plus Git metadata measured 368.87 MB. The final verification commit adds the latest screenshots and documentation; its exact current measurement is printed by the read-only checker and must remain below 400 MB. These are measured snapshots, not a permanent size guarantee.
 
 Both the release validator and `package_release.py --check-only` passed. The packager has not been run in archive-creation mode during this check. No release ZIP is claimed. Any subsequent missing-file, unfinished-render or size failure must be resolved before packaging.

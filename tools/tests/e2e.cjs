@@ -8,7 +8,7 @@ let browser,page,context;
 async function click(action,extra=''){await page.locator('[data-action="'+action+'"]'+extra).first().click();}
 async function shot(name){await page.screenshot({path:path.join(root,'docs/screenshots/test-'+name+'.png'),fullPage:true});}
 async function fresh(){await page.goto(url);await page.evaluate(()=>localStorage.clear());await page.reload();await page.waitForSelector('.assessment-card');}
-async function mock(exam){await click('choose','[data-exam="'+exam+'"]');await click('instructions-next');await click('begin');await page.waitForSelector('.exam');}
+async function mock(exam){await click('choose','[data-exam="'+exam+'"]');await click('instructions-next');await click('begin');await page.waitForSelector('.exam');assert.equal(await page.locator('#toast.toast-visible').count(),0,'new exams clear stale notices');}
 async function qdata(){return page.evaluate(()=>({q:window.PHV_UI.question,a:window.PHV.state.attempt}));}
 async function completeCloze(q,drag){
  if(drag){for(const [key,word] of Object.entries(q.blanks)){await page.locator('.word-bank [data-word]').filter({hasText:word}).filter({visible:true}).first().count();const tile=page.locator('.word-bank [data-word]').filter({hasText:new RegExp('^'+word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'$')});await tile.dragTo(page.locator('.blank-slot[data-blank="'+key+'"]'));}

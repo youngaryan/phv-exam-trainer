@@ -39,3 +39,7 @@ Full 2 fps video extraction and OCR would have produced excessive files on the c
 ## Persistence and revision
 
 Settings, active attempt, seen questions and the latest 100 completed sessions are stored locally with every storage operation guarded. A monotonic wall-clock deadline survives refresh and closing the app; leaving a timed attempt does not pause its timer. Question selection avoids repeats within each eligible pool until it is exhausted, with a shared seen list across drills and mocks. Missed questions are due immediately; successive correct reviews return after 1 and 3 days, then leave the queue on the third success. Due items take priority. Progress JSON imports are strictly validated and explicitly replace existing progress; no uploaded file leaves the computer.
+
+## Local Git maintenance under disk pressure
+
+The map release commit succeeded, but Git's subsequent automatic geometric repack exhausted the remaining disk. Its single incomplete `tmp_pack` file was removed after verifying the target, and `git fsck --full --strict` confirmed the committed repository is intact. `maintenance.auto=false` and `gc.auto=0` are local checkout settings to prevent another temporary duplication of the map data. They do not change source files or the behaviour of a fresh clone. Re-enable maintenance after freeing sufficient space if desired. No GitHub remote or push was created.

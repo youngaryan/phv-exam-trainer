@@ -52,6 +52,7 @@
   }
   function start(exam,mode,filter='all'){
     try{
+      clearTimeout(toastTimeout);$('#toast').classList.remove('toast-visible');
       let qs,minutes=exam==='seru'?C.presets[P.state.settings.preset].minutes:C.topo.minutes;
       if(mode==='mock'){if(exam==='seru'){const p=C.presets[P.state.settings.preset];qs=['mcq','cloze','reading'].flatMap(type=>P.draw(window.SERU_BANK.filter(q=>q.type===type),p[type],'seru-'+type));qs=P.shuffle(qs);}else qs=topoDraw();}
       else{let pool=(exam==='seru'?window.SERU_BANK:window.TOPO_BANK).filter(q=>filter==='all'||String(q.section)===filter||(filter.startsWith('route:')&&q.routeType===filter.slice(6))||(filter.startsWith('topic:')&&q.subsection===filter.slice(6)));if(mode==='mistakes'){pool=pool.filter(q=>P.state.mistakes[q.id]);const due=pool.filter(q=>P.state.mistakes[q.id].due<=Date.now());if(due.length)pool=due;}if(!pool.length){toast('There are no questions in this selection yet.');return;}qs=P.draw(pool,Math.min(10,pool.length),exam+'-'+mode+'-'+filter);}

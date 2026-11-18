@@ -1,11 +1,11 @@
 {
-  "started": "2026-11-18T16:37:10.535Z",
+  "started": "2026-11-18T16:42:20.695Z",
   "checks": [
     "Home works from file:// with network disabled.",
+    "Screen captured: mcq",
+    "Answers and flags survive refresh.",
     "Drag red-box rule blocks incomplete disposal.",
     "Screen captured: cloze",
-    "Answers and flags survive refresh.",
-    "Screen captured: mcq",
     "Screen captured: reading",
     "Full SERU A mock: 37 questions, all types, drag-and-drop, 100%.",
     "Full SERU B mock: 36 questions, dropdowns, 60-minute timer, 100%.",
@@ -17,5 +17,5 @@
   "consoleErrors": [],
   "externalRequests": [],
   "ok": true,
-  "finished": "2026-11-18T16:37:53.165Z"
+  "finished": "2026-11-18T16:42:58.103Z"
 }

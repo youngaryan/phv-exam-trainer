@@ -84,7 +84,7 @@ All handbook items must be framed as handbook-based study questions. The current
 | Topo timer |70m official video; older official session is90m |70 minutes; timer top right,HH:MM:SS. |
 | Route toolbar labels, undo/clear semantics |Not legible in inspected video frames |Undo last point; Clear route; Centre on start; Map key. Undo removes newest vertex; clear resets current route. |
 | Straight-line versus snap plotting |Click/release adds route officially; precise snapping algorithm **unknown** |Real-exam practice uses straight segments; assisted mode follows graph. Do not claim exact vendor algorithm. |
-| Route line colour/width | Exact current value **unknown** | Blue5px user line, green dashed optimum after submission/practice, red violations. |
+| Route line colour/width | Exact current value **unknown** | Blue6px user line, green dashed optimum after submission/practice, red violations. |
 | Static map dimensions/reference legend size |Noninteractive behaviour official in video; exact dimensions **unknown** |About900×600 crops and separate legend; no pan/zoom in MCQ. |
 | True/false essentials layout | Topic confirmed, exact screen **unknown** | Static illustrated scenario with true/false controls. |
 | Changes since April2026 | Provider reports May changes, current official three-route guide agrees in part | Use3 routes and on-screen maps; do not carry over obsolete4-route/printed-atlas mode. |

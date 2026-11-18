@@ -1,6 +1,8 @@
 # PHV Exam Trainer
 
-A free, offline practice app for London private hire applicants preparing for **SERU** and the **Topographical assessment**. It does not include the English speaking/listening assessment.
+[**Open PHV Exam Trainer in your browser**](https://youngaryan.github.io/phv-exam-trainer/)
+
+Practise for the London private hire **SERU** and **Topographical** assessments. Choose **Practice by section** to get feedback as you go, or **Start mock exam** for a timed session. Your progress is saved in the browser you use. For practice without an internet connection, use the offline download below.
 
 **Unofficial. Not affiliated with or endorsed by Transport for London. Practice questions are original and are not real exam questions. Always study the official PHV Driver's Handbook.**
 

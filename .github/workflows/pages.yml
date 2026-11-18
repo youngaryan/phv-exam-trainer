@@ -1,0 +1,46 @@
+name: Publish trainer to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app/**'
+      - 'LICENSE'
+      - 'ATTRIBUTION.md'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/configure-pages@v5
+      - name: Include licence and attribution with the trainer
+        run: cp LICENSE ATTRIBUTION.md app/
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: app
+
+  deploy:
+    needs: upload
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish
+        id: deployment
+        uses: actions/deploy-pages@v4

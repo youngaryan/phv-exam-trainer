@@ -620,6 +620,38 @@ def legend():
     d.text((35,730),'© OpenStreetMap contributors · Database ODbL-1.0 · Not a navigation map',font=font(12),fill='#59636a');out=APP/'maps/legend.webp';out.parent.mkdir(parents=True,exist_ok=True);img.save(out,'WEBP',quality=92)
     empty=Image.new('RGB',(256,256),'#edeae3');ed=ImageDraw.Draw(empty);ed.text((25,112),'Outside practice coverage',font=font(13),fill='#687578');(APP/'tiles').mkdir(parents=True,exist_ok=True);empty.save(APP/'tiles/empty.webp','WEBP',quality=80)
 
+def finalise_bank(data,g,bank,atlas):
+    """Remove repeated geographic targets and balance displayed answer slots."""
+    from PIL import ImageDraw
+    ways={r['id']:r for r in data['roads']};allowed={e['osmWay'] for e in g['edges']}
+    streets=[q for q in bank if q.get('evidence',{}).get('kind')=='streets']
+    known={tuple(sorted(q['evidence']['visible'])) for q in streets};seen={}
+    for q in streets:
+        pair=tuple(sorted(q['evidence']['visible']))
+        if pair not in seen:seen[pair]=q['id'];continue
+        old=q['evidence']['visible'][1];road=ways[q['evidence']['wayIds'][0]];p=road['geometry'][len(road['geometry'])//2]
+        candidates=[r for r in data['roads'] if r['id'] in allowed and r['name'] and r['name'] not in q['options'] and tuple(sorted([road['name'],r['name']])) not in known and any(distance(p,pt)<220 for pt in r['geometry'])]
+        if not candidates:raise ValueError('Cannot repair duplicate street pair '+q['id'])
+        other=min(candidates,key=lambda r:min(distance(p,pt) for pt in r['geometry']))
+        q['options'][q['options'].index(old)]=other['name'];q['evidence']['visible'][1]=other['name'];q['evidence']['wayIds'][1]=other['id'];q['evidence']['duplicateReplacedFrom']=seen[pair]
+        q['explanation']='The map labels '+' and '.join(q['evidence']['visible'])+'. The other options are real streets outside this extract.'
+        atlas.enabled=True;im,_,origin=atlas.static(p,17,focus=True);d=ImageDraw.Draw(im)
+        for k,r in enumerate([road,other]):
+            pt=r['geometry'][len(r['geometry'])//2] if not k else min(r['geometry'],key=lambda pt:distance(p,pt));x,y=mercator(*pt,17);x-=origin[0];y-=origin[1];text=r['name'].upper();bb=font_bbox(text,16,True);width=bb[2]-bb[0];x=max(10,min(880-width,x+8));y=max(10,min(552,y+24*k));d.rectangle((x-4,y-3,x+width+4,y+21),fill='#fffdf8',outline='#6d6d68');d.text((x,y),text,font=font(16,True),fill='#242e35')
+        save_static(im,q['id']);known.add(tuple(sorted(q['evidence']['visible'])));print('Replaced duplicate source pair',q['id'],q['evidence']['visible'],flush=True)
+    counters=collections.Counter();pairs=[(0,1),(2,3),(0,2),(1,3),(0,3),(1,2)]
+    for q in bank:
+        if q['type']=='route':continue
+        options=q['options'];n=len(options)
+        if q['type']=='multi':
+            correct=[options[i] for i in q['answer']];wrong=[x for i,x in enumerate(options) if i not in q['answer']];target=pairs[counters['multi']%len(pairs)];counters['multi']+=1;new=[None]*n
+            for slot,value in zip(target,correct):new[slot]=value
+            for slot,value in zip([i for i in range(n) if i not in target],wrong):new[slot]=value
+            q['options']=new;q['answer']=list(target)
+        else:
+            target=counters[n]%n;counters[n]+=1;old=q['answer'];options[target],options[old]=options[old],options[target];q['answer']=target
+    return bank
+
 def subgraphs(g,routes):
     out=APP/'data/topo_routes';out.mkdir(parents=True,exist_ok=True)
     nodes={n['id']:n for n in g['nodes']}
@@ -649,7 +681,7 @@ def main():
     atlas=Atlas(data,g)
     if args.tiles:render_tiles(atlas)
     if args.bank:
-        bank=make_mcq(data,g,routes,atlas,args.only.split(',') if args.only else None);dump_js(APP/'data/topo_bank.js','TOPO_BANK',bank+routes)
+        bank=make_mcq(data,g,routes,atlas,args.only.split(',') if args.only else None);bank=finalise_bank(data,g,bank,atlas);dump_js(APP/'data/topo_bank.js','TOPO_BANK',bank+routes)
     legend()
     pbf=WORK/'greater-london-latest.osm.pbf';hashcache=WORK/'pbf-sha256.txt'
     if pbf.exists():

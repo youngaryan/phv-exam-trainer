@@ -1,0 +1,21 @@
+{
+  "started": "2026-11-18T16:37:10.535Z",
+  "checks": [
+    "Home works from file:// with network disabled.",
+    "Drag red-box rule blocks incomplete disposal.",
+    "Screen captured: cloze",
+    "Answers and flags survive refresh.",
+    "Screen captured: mcq",
+    "Screen captured: reading",
+    "Full SERU A mock: 37 questions, all types, drag-and-drop, 100%.",
+    "Full SERU B mock: 36 questions, dropdowns, 60-minute timer, 100%.",
+    "Timer automatically submits saved answers.",
+    "Full Topographical mock: 3 plotted optimal routes + 21 map questions, 100/100.",
+    "Progress export/import round trip.",
+    "Compact layout has no horizontal overflow."
+  ],
+  "consoleErrors": [],
+  "externalRequests": [],
+  "ok": true,
+  "finished": "2026-11-18T16:37:53.165Z"
+}

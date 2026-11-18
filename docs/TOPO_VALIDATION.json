@@ -1,0 +1,104 @@
+{
+  "counts": {
+    "mcq": 400,
+    "multi": 100,
+    "long": 40,
+    "short": 60,
+    "closure": 40
+  },
+  "sections": {
+    "Route planning essentials": 70,
+    "Map symbols": 60,
+    "Places of interest": 70,
+    "Specific streets": 70,
+    "Road numbers": 60,
+    "Compass points and directions": 70,
+    "Route planning": 140
+  },
+  "singleAnswerPositionsByOptionCount": {
+    "2": {
+      "0": 35,
+      "1": 35
+    },
+    "4": {
+      "0": 58,
+      "1": 58,
+      "2": 57,
+      "3": 57
+    }
+  },
+  "multiAnswerPositionUses": {
+    "0": 50,
+    "1": 50,
+    "2": 50,
+    "3": 50
+  },
+  "semanticDuplicateCount": 0,
+  "imageQuestionDuplicateCount": 0,
+  "nearStemPairCount": 4679,
+  "nearStemExplanation": "Similar instructions on distinct maps/source targets are expected; semantic and image-question duplicates are rejected.",
+  "nearStemExamples": [
+    {
+      "a": "TOPO-ESSENTIALS-001",
+      "b": "TOPO-ESSENTIALS-019",
+      "similarity": 85.92
+    },
+    {
+      "a": "TOPO-ESSENTIALS-001",
+      "b": "TOPO-ESSENTIALS-061",
+      "similarity": 86.51
+    },
+    {
+      "a": "TOPO-ESSENTIALS-001",
+      "b": "TOPO-ESSENTIALS-067",
+      "similarity": 85.82
+    },
+    {
+      "a": "TOPO-ESSENTIALS-003",
+      "b": "TOPO-ESSENTIALS-009",
+      "similarity": 85.12
+    },
+    {
+      "a": "TOPO-ESSENTIALS-003",
+      "b": "TOPO-ESSENTIALS-069",
+      "similarity": 87.77
+    },
+    {
+      "a": "TOPO-ESSENTIALS-005",
+      "b": "TOPO-ESSENTIALS-011",
+      "similarity": 87.95
+    },
+    {
+      "a": "TOPO-ESSENTIALS-005",
+      "b": "TOPO-ESSENTIALS-029",
+      "similarity": 86.69
+    },
+    {
+      "a": "TOPO-ESSENTIALS-005",
+      "b": "TOPO-ESSENTIALS-047",
+      "similarity": 86.22
+    },
+    {
+      "a": "TOPO-ESSENTIALS-005",
+      "b": "TOPO-ESSENTIALS-053",
+      "similarity": 90.0
+    },
+    {
+      "a": "TOPO-ESSENTIALS-006",
+      "b": "TOPO-ESSENTIALS-048",
+      "similarity": 86.9
+    },
+    {
+      "a": "TOPO-ESSENTIALS-007",
+      "b": "TOPO-ESSENTIALS-025",
+      "similarity": 85.71
+    },
+    {
+      "a": "TOPO-ESSENTIALS-008",
+      "b": "TOPO-ESSENTIALS-014",
+      "similarity": 89.97
+    }
+  ],
+  "errors": [],
+  "errorCount": 0
+}

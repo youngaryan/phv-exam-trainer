@@ -74,7 +74,7 @@ Real route answers are marked by human assessors. The automatic deductions and 3
 
 ## Rebuild and test — developers only
 
-End users do not need these tools. Development requires Python 3.12+, Node.js and an installed Edge browser. On Windows:
+End users do not need these tools. Development requires Python 3.12+, Node.js and an installed Edge browser. The temporary Python environment was removed after validation to recover local disk space; tested package versions are recorded in `tools/requirements-lock.txt`. On Windows:
 
 ```powershell
 python -m venv tools/.venv
@@ -88,9 +88,8 @@ tools/.venv/Scripts/python.exe tools/build_maps.py --extract --tiles --bank
 tools/.venv/Scripts/python.exe tools/validate_seru.py
 tools/.venv/Scripts/python.exe tools/validate_topo.py
 tools/.venv/Scripts/python.exe tools/validate_release.py
-node tools/tests/marking.cjs --bank
 npm.cmd --prefix tools test
-node tools/tests/route-ui.cjs
+node tools/tests/portable.cjs
 ```
 
 The smaller atlas builder uses pyosmium, Shapely and Pillow instead of the originally proposed Planetiler/MapLibre stack after local disk exhaustion. It renders its own buffered metatiles; it never downloads public OSM raster tiles. See [MAP_BUILD.md](docs/MAP_BUILD.md) for the source URL, source hash, coverage and exact rebuild procedure. Noto fonts and Leaflet are vendored. The handbook remains linked rather than bundled; page extraction instructions are in [SERU_AUDIT.md](docs/SERU_AUDIT.md).

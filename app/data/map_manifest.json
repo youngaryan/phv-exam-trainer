@@ -1,0 +1,19 @@
+{
+  "pbfSha256": "0f02b29482e441a579da5a2c2e35b30745cbf8001e6433edc8838d0689151265",
+  "source": "https://download.geofabrik.de/europe/united-kingdom/england/greater-london.html",
+  "accessed": "2026-11-18",
+  "bounds": [
+    51.475,
+    -0.225,
+    51.565,
+    -0.045
+  ],
+  "nodes": 50026,
+  "edges": 99520,
+  "restrictions": 1219,
+  "unsupportedRestrictionCount": 172,
+  "pois": 2855,
+  "routes": 140,
+  "tileCount": 4734,
+  "staticImageCount": 400
+}

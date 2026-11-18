@@ -2,6 +2,7 @@
 from __future__ import annotations
 import collections
 import heapq
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -44,7 +45,7 @@ def main():
                 check(edges[path[i-1]]['to']==edges[eid]['from'],qid+' broken continuity')
                 check((path[i-1],eid) not in banned,qid+' prohibited turn')
         return sum(edges[e]['length'] for e in path)
-    counts=collections.Counter();sections=collections.Counter();positions=collections.Counter()
+    counts=collections.Counter();sections=collections.Counter();positions=collections.Counter();arity_positions=collections.defaultdict(collections.Counter);multi_positions=collections.Counter();semantic_seen={};exact_seen={};mcq_items=[]
     routes={q['id']:q for q in bank if q['type']=='route'}
     for q in bank:
         qid=q['id'];sections[q['section']]+=1
@@ -69,15 +70,19 @@ def main():
                     x=int((lon+180)/360*2**z);y=int((1-math.asinh(math.tan(math.radians(lat)))/math.pi)/2*2**z)
                     check((APP/'tiles'/str(z)/str(x)/(str(y)+'.webp')).exists(),qid+f' missing tile {z}/{x}/{y}')
             continue
-        counts['mcq']+=1;counts['multi']+=q['type']=='multi';options=q['options'];answer=q['answer'];ev=q['evidence'];kind=ev['kind']
+        counts['mcq']+=1;counts['multi']+=q['type']=='multi';options=q['options'];answer=q['answer'];ev=q['evidence'];kind=ev['kind'];mcq_items.append(q)
+        identity=(ev.get('routeId'),ev.get('scenario')) if kind=='route_scenario' else ev.get('poi') if kind in {'symbol','poi'} else tuple(sorted(ev['visible'])) if kind=='streets' else tuple(sorted((r['name'],r['ref']) for r in ev['roads'])) if kind=='road_number' else (ev['start'],ev['east'],ev['south']) if kind=='grid' else ev.get('edge')
+        semantic=(kind,identity);check(semantic not in semantic_seen,qid+' duplicates geographic target '+str(semantic_seen.get(semantic)));semantic_seen[semantic]=qid
         check(len(options)==(2 if kind=='route_scenario' else 4),qid+' option count')
         check(len(set(options))==len(options),qid+' duplicate options')
         check((APP/q['map']).is_file(),qid+' missing image')
+        if (APP/q['map']).exists():
+            image_hash=hashlib.sha256((APP/q['map']).read_bytes()).hexdigest();exact=(q['question'].casefold(),image_hash);check(exact not in exact_seen,qid+' duplicates image and question '+str(exact_seen.get(exact)));exact_seen[exact]=qid
         from PIL import Image
         with Image.open(APP/q['map']) as im:check(im.size==(900,600),qid+' image not900x600')
         if q['type']=='multi':
-            check(isinstance(answer,list) and len(answer)==2 and len(set(answer))==2,qid+' invalid multi answer');selected=[options[i] for i in answer];check(q['marks']==2,qid+' multi marks')
-        else:check(isinstance(answer,int) and 0<=answer<len(options),qid+' invalid answer');selected=[options[answer]];positions[answer]+=1
+            check(isinstance(answer,list) and len(answer)==2 and len(set(answer))==2,qid+' invalid multi answer');selected=[options[i] for i in answer];check(q['marks']==2,qid+' multi marks');multi_positions.update(answer)
+        else:check(isinstance(answer,int) and 0<=answer<len(options),qid+' invalid answer');selected=[options[answer]];positions[answer]+=1;arity_positions[len(options)][answer]+=1
         expected=[]
         if kind=='symbol':
             from build_maps import CATEGORIES
@@ -117,7 +122,18 @@ def main():
     check(counts['short']>=60,'Need60 short routes');check(counts['closure']>=40,'Need40 closure routes');check(counts['long']>=40,'Need40 long routes');check(counts['mcq']>=400,'Need400 MCQ');check(counts['multi']>=70,'Need70 dual-answer items')
     check((APP/'maps/legend.webp').exists(),'Missing map key')
     for section in ('Route planning essentials','Route planning','Map symbols','Places of interest','Specific streets','Road numbers','Compass points and directions'):check(sections[section]>0,'Missing section '+section)
-    print(json.dumps({'counts':dict(counts),'sections':dict(sections),'singleAnswerPositions':dict(positions),'errors':errors[:50],'errorCount':len(errors)},indent=2))
+    for arity,histogram in arity_positions.items():
+        values=[histogram[i] for i in range(arity)];check(max(values)-min(values)<=1,f'Answer positions not balanced for {arity} options: {values}')
+    check(max(multi_positions.values())-min(multi_positions.values())<=2,'Multi-answer positions not balanced')
+    from rapidfuzz.fuzz import ratio
+    near=[]
+    for i,a in enumerate(mcq_items):
+        for b in mcq_items[i+1:]:
+            similarity=ratio(a['question'],b['question'])
+            if similarity>85:near.append({'a':a['id'],'b':b['id'],'similarity':round(similarity,2)})
+    report={'counts':dict(counts),'sections':dict(sections),'singleAnswerPositionsByOptionCount':{str(k):dict(v) for k,v in arity_positions.items()},'multiAnswerPositionUses':dict(multi_positions),'semanticDuplicateCount':sum('duplicates geographic target' in e for e in errors),'imageQuestionDuplicateCount':sum('duplicates image and question' in e for e in errors),'nearStemPairCount':len(near),'nearStemExplanation':'Similar instructions on distinct maps/source targets are expected; semantic and image-question duplicates are rejected.','nearStemExamples':near[:12],'errors':errors[:50],'errorCount':len(errors)}
+    (ROOT/'docs/TOPO_VALIDATION.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
+    print(json.dumps(report,indent=2))
     if errors:raise SystemExit(1)
     print('Topographical validation PASS: every answer recomputed, every route distance-optimal and legal in the released exercise graph.')
 

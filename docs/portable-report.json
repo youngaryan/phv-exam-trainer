@@ -1,0 +1,11 @@
+{
+  "checks": [
+    "Clean offline browser context opens the spaced/ampersand file URI.",
+    "The copied atlas, graph, route bank and legend load without developer dependencies."
+  ],
+  "consoleErrors": [],
+  "networkRequests": [],
+  "ok": true,
+  "path": "C:\\Users\\AryanGolbaghi\\Desktop\\lendable\\starter\\old\\arch\\phv_app\\research\\Fresh machine test & spaces",
+  "note": "Large immutable assets use NTFS hardlinks to avoid duplicating bytes on the constrained disk. This is a clean-profile/path test on the current PC, not a second physical machine."
+}

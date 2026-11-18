@@ -5,11 +5,10 @@ try {
     if (-not $appPath) { $appPath = Join-Path (Split-Path -Parent $PSScriptRoot) 'app\index.html' }
     $resolved = (Resolve-Path -LiteralPath $appPath).Path
     $fileUri = [Uri]::new($resolved).AbsoluteUri
-    $candidates = @(
-        (Join-Path ${env:ProgramFiles(x86)} 'Microsoft\Edge\Application\msedge.exe'),
-        (Join-Path $env:ProgramFiles 'Microsoft\Edge\Application\msedge.exe'),
-        (Join-Path $env:LOCALAPPDATA 'Microsoft\Edge\Application\msedge.exe')
-    )
+    $programRoots = @(${env:ProgramFiles(x86)}, $env:ProgramFiles, $env:LOCALAPPDATA) | Where-Object { $_ }
+    $candidates = foreach ($programRoot in $programRoots) {
+        Join-Path $programRoot 'Microsoft\Edge\Application\msedge.exe'
+    }
     $edge = $candidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
     if ($edge) {
         # The visible app window is the user-requested launcher output.

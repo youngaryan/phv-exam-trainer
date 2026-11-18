@@ -1,0 +1,12 @@
+{
+  "checks": [
+    "A full optimal route plotted through actual mouse clicks receives22/22.",
+    "Undo and clear update the drawing and stored points.",
+    "An actual mouse-plotted wrong-way detour loses marks.",
+    "Actual mouse-plotted closed-street route loses marks.",
+    "Local map reference image opens."
+  ],
+  "errors": [],
+  "requests": [],
+  "ok": true
+}

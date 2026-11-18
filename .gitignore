@@ -1,0 +1,17 @@
+research/
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+*.pbf
+*.pdf
+*.mp4
+*.webm
+*.mkv
+.cache/
+test-results/
+playwright-report/
+user-imports/
+*.log
+*.zip
+.DS_Store

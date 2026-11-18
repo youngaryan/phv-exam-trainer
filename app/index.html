@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' file: data: blob:; script-src 'self' file:; style-src 'self' file: 'unsafe-inline'; img-src 'self' file: data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>PHV Exam Trainer · Offline practice</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23192e51'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='Arial' font-weight='bold' font-size='35' fill='white'%3EP%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div id="app"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="dialog" aria-label="Assessment dialog"></dialog>
+  <input id="import-file" type="file" accept="application/json,.json" hidden>
+  <noscript>Enable JavaScript to use the offline trainer. No internet connection is needed.</noscript>
+  <script src="data/config.js"></script>
+  <script src="data/seru_bank.js"></script>
+  <script src="data/map_data.js"></script>
+  <script src="data/topo_bank.js"></script>
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="js/routing.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

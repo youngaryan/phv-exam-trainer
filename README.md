@@ -4,17 +4,31 @@ A free, offline practice app for London private hire applicants preparing for **
 
 **Unofficial. Not affiliated with or endorsed by Transport for London. Practice questions are original and are not real exam questions. Always study the official PHV Driver's Handbook.**
 
+## Download and run
+
+1. [Download PHV Exam Trainer as a ZIP](https://github.com/youngaryan/phv-exam-trainer/archive/refs/heads/main.zip), or choose **Code → Download ZIP** on GitHub.
+2. Extract the entire ZIP. Open the folder containing `README.md` and keep its `app` folder alongside the launchers. The maps and questions are included in the download.
+3. Start the trainer using the instructions for your computer.
+
+| System | How to start |
+| --- | --- |
+| Windows 10 or 11 | Double-click **Start PHV Trainer.bat**. The launcher opens Edge if installed, or your default browser. |
+| Linux desktop | Open a terminal in the extracted folder and run `sh start.sh`, or open **app/index.html** in your browser. |
+| macOS | Open **app/index.html** in your browser, or run `sh start.sh` in Terminal from the extracted folder. |
+
+Once extracted, the trainer works offline. You only need a browser to practise. Offline testing was performed with Edge on Windows. The Linux and macOS launchers have not been tested on those systems.
+
+## Your first practice session
+
+1. On **Overview**, select **Practice by section** under **SERU assessment** or **Topographical assessment**, then choose a section. For a route exercise, choose **Short routes**.
+2. For **SERU**, select an answer or drag words into the blanks. In drag mode, put the unused words in **Incorrect words here**. For **Topographical**, click the green start, click at each bend and finish at the red marker. Drag the map to pan, scroll to zoom, and use **Undo last point** to correct a click. Select **Check route** to compare your drawing with the reference route.
+3. Select **Click here to review assessment** to revisit any question. Choose **Finish assessment** and confirm to see your score. Expand a question under **Question review** for the answer and explanation. Use **My mistakes** for another drill on missed questions.
+
+For a timed session, select **Start mock exam** on Overview. The countdown begins when you choose **Begin assessment** after the instructions and continues if you close the window. Answers save automatically. Mock feedback appears after submission.
+
+To keep a backup or move to another computer, select **Settings → Export progress** in the original browser. On the new computer, open the trainer, select **Settings → Import progress** and choose the saved JSON file. Confirming the import replaces that browser's existing progress.
+
 ![Trainer overview](docs/screenshots/test-home.png)
-
-## Run on Windows
-
-1. Download the repository ZIP and **extract it completely**.
-2. Double-click **Start PHV Trainer.bat**.
-3. Microsoft Edge opens the local app in a separate app window. If Edge is unavailable, the launcher uses your default browser.
-
-No installation, administrator permission, server, login or internet connection is required. You can also open `app/index.html` directly. Keep the whole extracted folder together: the maps and question files are local assets. Mac/Linux users can run `sh start.sh`, or open `app/index.html`.
-
-Progress stays in the browser's local storage. Use **Settings → Export progress** before moving the folder or switching browsers. Private browsing and browser cleanup can remove stored progress. Official study links open only when clicked and require internet access.
 
 ## What is included
 
@@ -101,20 +115,3 @@ The smaller atlas builder uses pyosmium, Shapely and Pillow instead of the origi
 Open an issue with the **question ID**, question wording, selected answer, expected answer, handbook edition/page or map feature, and a short explanation. IDs appear in the progress export and data files. For routing, include the route ID and a screenshot of the plotted path. Do not post candidate personal information or leaked exam content. Original authoring records live under `tools/seru_items_*.txt` and map generators under `tools/build_maps.py`.
 
 Code is MIT. Maps/databases, fonts and vendored libraries retain their own licences: see [ATTRIBUTION.md](ATTRIBUTION.md).
-
-## Publish your repository
-
-No remote is configured and nothing is pushed automatically. After creating an empty public repository named `phv-exam-trainer` on your GitHub account:
-
-```powershell
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/phv-exam-trainer.git
-git push -u origin main
-git push origin v1.0.0
-```
-
-If GitHub CLI is installed and signed in, you can create and push it with:
-
-```powershell
-gh repo create phv-exam-trainer --public --source . --remote origin --push
-git push origin v1.0.0
-```

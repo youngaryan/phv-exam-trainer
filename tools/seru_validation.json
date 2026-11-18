@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "items": 540,
+  "types": {
+    "mcq": 350,
+    "cloze": 150,
+    "reading": 40
+  },
+  "sections": {
+    "1": 76,
+    "2": 25,
+    "3": 50,
+    "4": 58,
+    "5": 32,
+    "6": 61,
+    "7": 106,
+    "8": 69,
+    "9": 44,
+    "10": 19
+  },
+  "mcqAnswerPositions": {
+    "0": 117,
+    "1": 117,
+    "2": 116
+  },
+  "readingAnswerPositions": {
+    "0": 14,
+    "1": 13,
+    "2": 13
+  },
+  "nearDuplicateThreshold": 85,
+  "nearDuplicates": [],
+  "errors": [],
+  "limitation": "Structural validation does not prove factual correctness; see docs/SERU_AUDIT.md."
+}

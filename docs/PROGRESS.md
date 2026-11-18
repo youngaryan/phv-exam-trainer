@@ -4,13 +4,13 @@ Started 18 November 2026. This file records completed work and verification limi
 
 - [x] Read the supplied specification and inspect the empty workspace.
 - [x] Initialise Git and assign bounded research, SERU content and map-data workstreams.
-- [ ] Research assessment formats, official material, candidate experiences and 40 useful sources.
-- [ ] Record UI evidence, unknowns, defaults and differences.
-- [ ] Build the offline shared shell, launcher, review, timer and persistence.
-- [ ] Build and validate SERU banks, both presets and both blank styles.
-- [ ] Build OSM maps, routing data, route bank and computed map questions.
-- [ ] Implement route plotting and configurable approximation of route marking.
-- [ ] Add practice, mistakes, statistics, settings and JSON export/import.
+- [x] Research assessment formats, official material, candidate experiences and 40 useful sources. Register: 53 sources; official video confirms 24 Topographical questions/70 minutes.
+- [x] Record UI evidence, unknowns, defaults and differences. Raw screenshots and bounded video frames inspected; exhaustive OCR remains a documented deviation.
+- [x] Build the offline shared shell, launcher, review, timer and persistence.
+- [x] Build and validate SERU banks, both presets and both blank styles. 540 items; 54-item source audit; both complete mocks passed offline.
+- [x] Build OSM maps, routing data, route bank and computed map questions. 140 routes + 400 MCQs; map audit in progress.
+- [x] Implement route plotting and configurable approximation of route marking. All 140 optimal geometries and actual browser wrong-way/closure cases passed.
+- [x] Add practice, mistakes, statistics, settings and JSON export/import. Final suite includes transfer round trip.
 - [ ] Run validators, browser tests, answer audits and visual review.
 - [ ] Verify launcher in a path with spaces and offline browser operation.
 - [ ] Package licences, attribution, README, Git milestones and release tag.
@@ -18,3 +18,13 @@ Started 18 November 2026. This file records completed work and verification limi
 ## Evidence policy
 
 Officially confirmed facts are distinguished from third-party reports and simulator defaults. Tests are recorded only after execution. Any unmet requested acceptance criterion must remain explicit in this file and the final report.
+
+## Explicit scope differences
+
+- Current PHV SERU composition remains unresolved in official public guidance; A and B are labelled reported/unverified formats.
+- Central-London coverage replaces complete Zones 1–2/wider-London coverage; real named POIs are snapped to exercise points, not individually verified frontages.
+- Pyosmium/Shapely/Pillow replace Planetiler/MapLibre after local disk exhaustion; the required local raster output and offline runtime are retained.
+- 172 conditional/via-way restrictions are not represented; only shown graph restrictions are marked.
+- The 2 fps/Tesseract video pass and exhaustive nested Rise question inventory were not completed. Original screenshot analysis and bounded official-video frame inspection were used.
+- Answer audits are documented agent source/map reviews, not human or TfL certification.
+- A separate clean physical PC is unavailable; the release will be checked using a clean browser context, disabled browser networking, a spaced path and the actual Windows launcher on this PC.

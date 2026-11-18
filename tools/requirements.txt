@@ -3,9 +3,7 @@ pypdf>=5,<7
 Pillow>=11,<13
 networkx>=3,<4
 shapely>=2,<3
-pyproj>=3,<4
 rapidfuzz>=3,<4
-osmnx>=2,<3
 osmium>=4,<5
 requests>=2,<3
 yt-dlp

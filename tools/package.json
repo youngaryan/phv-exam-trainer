@@ -2,6 +2,12 @@
   "name": "phv-exam-trainer-tools",
   "version": "1.0.0",
   "private": true,
-  "scripts": { "test": "node tests/e2e.cjs", "test:unit": "node tests/marking.cjs" },
-  "devDependencies": { "playwright": "1.58.2", "leaflet": "1.9.4", "maplibre-gl": "5.18.0" }
+  "scripts": {
+    "test": "node tests/state.cjs && node tests/marking.cjs --bank && node tests/e2e.cjs && node tests/route-ui.cjs",
+    "test:unit": "node tests/state.cjs && node tests/marking.cjs --bank"
+  },
+  "devDependencies": {
+    "leaflet": "1.9.4",
+    "playwright": "1.58.2"
+  }
 }

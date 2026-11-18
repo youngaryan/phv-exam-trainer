@@ -6,3 +6,26 @@
 @media(max-width:1100px){.page{padding:32px 28px}.workspace{grid-template-columns:180px 1fr}.sidebar{padding-inline:12px}.topnav{padding-inline:26px}.card-top,.card-details,.card-actions{padding-inline:20px}.card-details{gap:20px}.question-with-feedback{grid-template-columns:1fr}.exam-panel{padding:25px}.route-layout{grid-template-columns:240px 1fr}.exam-identity{gap:10px}.exam-meta{gap:14px}.map-question{gap:20px;grid-template-columns:minmax(0,1fr) minmax(260px,.8fr)}}
 @media(max-width:800px){.topnav{height:68px;padding:0 20px}.topnav-right .candidate{display:none}.workspace{display:block}.sidebar{flex-direction:row;padding:10px 15px;overflow:auto;border-right:0;border-bottom:1px solid var(--line)}.sidebar .eyebrow,.sidebar-bottom{display:none}.nav-item{white-space:nowrap;padding:10px}.page{padding:26px 20px}.page h1{font-size:28px}.assessment-grid,.lower-grid,.form-grid,.topic-grid{grid-template-columns:1fr}.page-heading{align-items:flex-start}.card-top{min-height:0}.exam{padding:0 10px 10px;min-height:650px}.exam-top{height:95px;min-height:95px;gap:10px}.exam-identity{font-size:10px;flex-wrap:wrap;max-width:45%}.exam-meta{display:block}.assessment-progress{width:100%;margin-bottom:9px}.exam-timer{font-size:12px;padding:6px;min-width:170px}.exam-panel{padding:20px}.exam-panel h1{font-size:17px}.exam-bottom{align-items:stretch;gap:7px}.exam-bottom>div{gap:6px;flex-wrap:wrap}.exam-bottom button{font-size:10px;padding:8px}.exam-bottom button.nav-question{min-width:0}.map-question{grid-template-columns:1fr}.static-map{max-height:42vh}.route-layout{grid-template-columns:190px 1fr}.route-instructions{padding:16px;font-size:11px}.route-instructions h1{font-size:14px}.route-feedback-columns{grid-template-columns:1fr}.route-feedback{max-height:180px}.result-hero{flex-wrap:wrap}.result-meta{width:100%;justify-content:space-between}.stat-cards{grid-template-columns:1fr 1fr 1fr;gap:8px}.stat-cards .box{padding:15px}.stat-cards .box strong{font-size:22px}.facts{gap:8px}.fact{padding:16px}.review-heading{align-items:flex-start;flex-direction:column}.question-counter{margin-bottom:12px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+/* Measured official SERU screenshot refinements; simulator-only feedback stays separate. */
+.mock .exam-top{height:46px;min-height:46px;font-size:11px}
+.mock .exam-panel:not(.route-panel){padding:25px 28px}
+.mock .exam-timer{font-size:13px;padding:6px 10px}
+.mock .assessment-progress{font-size:10px}
+.mock .progress-outline{height:8px;margin-top:4px}
+.mock .exam-logo{width:24px;height:24px;font-size:10px}
+.mock .question-counter{font-size:25px;margin-bottom:23px;color:#111}
+.mock .option{border:0;border-radius:0;padding:8px 0;background:white;font-size:17px}
+.mock .option:has(input:checked){background:white;border:0}
+.mock .option-letter{display:none}
+.mock .options{gap:5px}
+.mock .reading-passage{background:white;border:0;padding:0;margin:22px 0;line-height:1.65}
+.cloze-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,30%);gap:35px;align-items:start;margin:25px 0}
+.cloze-layout .cloze-passage{margin:0;line-height:3.2}
+.cloze-layout .discard-box{margin:0;min-height:270px;border-radius:0;background:#fec8cf;border:1px solid #b6a6a8;padding:18px}
+.cloze-layout .discard-title{text-align:center;font-weight:400;font-size:16px;margin-bottom:24px}
+.mock .blank-slot{border:1px solid #111;background:white;border-radius:0;min-width:120px;min-height:35px;color:#111;font-size:17px}
+.mock .blank-slot.filled{background:#e4e4e4}
+.mock .word-bank{border:0;border-radius:0;background:white;padding:0;margin-top:35px;gap:22px}
+.mock .word-tile{background:#d8d8d6;border:1px solid #999;border-radius:0;color:#111;box-shadow:none;font-size:17px;padding:10px 16px}
+.mock .discard-words .word-tile{font-size:15px;padding:8px}
+@media(max-width:800px){.mock .exam-top{height:85px;min-height:85px}.mock .question-counter{font-size:20px}.cloze-layout{grid-template-columns:1fr;gap:18px}.cloze-layout .discard-box{min-height:110px}.mock .word-bank{margin-top:18px}.mock .exam-panel:not(.route-panel){padding:20px}}

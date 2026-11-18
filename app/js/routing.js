@@ -35,12 +35,34 @@
   function optimalEdges(q){return (q.optimalEdges||[]).map(id=>graph().edges.get(String(id))).filter(Boolean);}
   function optimalPoints(q){const e=optimalEdges(q);return e.length?geometry(e):(q.optimal||[]).map(id=>graph().nodes.get(String(id))).filter(Boolean).map(coord);}
   function streetList(edges){const names=[];for(const e of edges){const name=e.name||e.ref||'Unnamed road';if(names[names.length-1]!==name)names.push(name);}return names;}
+  // Recognise a drawing following a known legal route, with only screen-pixel
+  // tolerance. Samples must advance continuously along its entire geometry;
+  // sharing endpoints, cutting a corner or tracing it backwards is insufficient.
+  function followsReference(points,reference,tolerance){
+    if(reference.length<2||distance(points[0],reference[0])>tolerance||distance(points[points.length-1],reference[reference.length-1])>tolerance)return false;
+    const origin=reference[0],cos=Math.cos(origin[0]*rad),xy=p=>[(p[1]-origin[1])*rad*R*cos,(p[0]-origin[0])*rad*R];
+    const ref=reference.map(xy),drawn=points.map(xy),segments=[];let total=0;
+    for(let i=1;i<ref.length;i++){const a=ref[i-1],b=ref[i],length=Math.hypot(b[0]-a[0],b[1]-a[1]);if(length>.001){segments.push({a,b,length,start:total});total+=length;}}
+    let progress=0,index=0;
+    for(let i=1;i<drawn.length;i++){const a=drawn[i-1],b=drawn[i],length=Math.hypot(b[0]-a[0],b[1]-a[1]),samples=Math.max(1,Math.ceil(length/2)),step=length/samples;
+      for(let j=1;j<=samples;j++){const p=[a[0]+(b[0]-a[0])*j/samples,a[1]+(b[1]-a[1])*j/samples];while(index<segments.length-1&&segments[index].start+segments[index].length<progress-tolerance)index++;let best=null,bestScore=Infinity;
+        for(let k=index;k<segments.length&&segments[k].start<=progress+step+2*tolerance+2;k++){const s=segments[k],dx=s.b[0]-s.a[0],dy=s.b[1]-s.a[1],t=Math.max(0,Math.min(1,((p[0]-s.a[0])*dx+(p[1]-s.a[1])*dy)/(s.length*s.length))),station=s.start+t*s.length,d=Math.hypot(p[0]-s.a[0]-t*dx,p[1]-s.a[1]-t*dy);if(station<progress-tolerance||station>progress+step+2*tolerance+2)continue;const score=d*d+.0001*(station-progress-step)**2;if(d<=tolerance&&score<bestScore){bestScore=score;best=station;}}
+        if(best===null)return false;progress=Math.max(progress,best);
+      }
+    }
+    return total-progress<=tolerance;
+  }
   function grade(q,points,total){
     const g=graph(),cfg=window.PHV_CONFIG.marking,start=g.nodes.get(String(q.start)),end=g.nodes.get(String(q.end));
     const result={score:0,total,correct:false,details:[],violations:[],matched:[],streets:[],length:0,ratio:0};
     if(points.length<2||!start||!end){result.details.push('Plot a route from the green start to the red end.');return result;}
     const first=points[0],last=points[points.length-1];
     if(distance(first,coord(end))<=cfg.endpointTolerance&&distance(last,coord(start))<=cfg.endpointTolerance){result.details.push('Route planned in reverse: 0 marks.');result.violations.push({points,label:'Route reversed'});return result;}
+    const references=[{edges:q.optimalEdges,length:q.optimalLength},...(q.acceptable||[]).filter(a=>a.edges)];
+    const referenceClosed=new Set((q.closedEdges||[]).map(String));
+    for(const reference of references){if(!reference.edges)continue;const es=reference.edges.map(id=>g.edges.get(String(id))).filter(Boolean);if(!es.length||es.length!==reference.edges.length||es[0].from!==String(q.start)||es[es.length-1].to!==String(q.end)||es.some((e,i)=>referenceClosed.has(e.id)||(i>0&&(es[i-1].to!==e.from||g.banned.has(es[i-1].id+'|'+e.id)))))continue;if(followsReference(points,geometry(es),cfg.referenceTolerance)){
+      result.score=total;result.correct=true;result.length=reference.length;result.ratio=reference.length/q.optimalLength;result.matched=reference.edges.slice();result.streets=streetList(es);result.details.push('The drawing follows a verified legal reference route within '+cfg.referenceTolerance+' m screen-matching tolerance.');return result;
+    }}
     let deduction=0;
     function loss(n,label,pts){deduction+=n;result.details.push(label+' (−'+n+')');if(pts)result.violations.push({points:pts,label});}
     if(distance(first,coord(start))>cfg.endpointTolerance)loss(cfg.endpointDeduction,'Start is more than '+cfg.endpointTolerance+' m from its marker',[first]);

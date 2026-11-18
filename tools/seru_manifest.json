@@ -1,0 +1,64 @@
+{
+  "total": 540,
+  "byType": {
+    "mcq": 350,
+    "cloze": 150,
+    "reading": 40
+  },
+  "bySection": {
+    "1": {
+      "mcq": 49,
+      "cloze": 21,
+      "reading": 6
+    },
+    "2": {
+      "mcq": 16,
+      "cloze": 7,
+      "reading": 2
+    },
+    "3": {
+      "mcq": 32,
+      "cloze": 14,
+      "reading": 4
+    },
+    "4": {
+      "mcq": 37,
+      "cloze": 16,
+      "reading": 5
+    },
+    "5": {
+      "mcq": 20,
+      "cloze": 9,
+      "reading": 3
+    },
+    "6": {
+      "mcq": 40,
+      "cloze": 17,
+      "reading": 4
+    },
+    "7": {
+      "mcq": 69,
+      "cloze": 30,
+      "reading": 7
+    },
+    "8": {
+      "mcq": 45,
+      "cloze": 19,
+      "reading": 5
+    },
+    "9": {
+      "mcq": 29,
+      "cloze": 12,
+      "reading": 3
+    },
+    "10": {
+      "mcq": 13,
+      "cloze": 5,
+      "reading": 1
+    }
+  },
+  "source": "https://content.tfl.gov.uk/phv-driver-handbook-v1.pdf",
+  "sourceVersion": "1.0",
+  "evidenceKind": "paraphrase",
+  "bankSha256": "4ca7e73c9e1d53ae8da53f291e9c7de6631f0b2901cd1c181ddb1fade913a5c7"
+}
